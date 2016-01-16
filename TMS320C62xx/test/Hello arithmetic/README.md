@@ -3,7 +3,7 @@ TMS320C62xx
 
 To build this project using Code Composer Studio v3.3 (CCStudio v3.3) 
 
-View TMS320C62x DSP CPU and Instruction Set Reference Guide in "CPU reference guide.pdf"
+View TMS320C62x DSP CPU and Instruction Set Reference Guide - http://www.ti.com/lit/ug/spru731a/spru731a.pdf
 
 ABOUT CPU
 -----------

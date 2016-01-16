@@ -1,0 +1,13 @@
+------------------------------  test_1.pjt - Debug  ------------------------------
+"c:\ti\c6000\cgtools\bin\cl6x" -g -q -al -fr"c:/users/admin/desktop/LR1/Debug" -d"_DEBUG" -mv6200 -@"Debug.lkf" "main.asm"
+<main.asm>
+
+vlnk Debug.lkv "LR1.rcp"
+COFF vLinker Version 2.00
+Copyright (c) 1996-2001 Texas Instruments Incorporated
+WARNING	input section main.obj\.text was not allocated into space
+	C6201EVM_map0\run_view and is being automatically placed into region
+	SDRAM0
+
+Build Complete,
+  0 Errors, 0 Warnings, 0 Remarks.

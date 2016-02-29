@@ -164,9 +164,11 @@ push ax
 push bx
 push dx
 push bp 
- 
+
   mov bx,dx
-  mov bp,dx; 
+  
+  xor ax,ax
+  mov ax,dx; 
   
   xor dx,dx
   add bx,2 
@@ -183,12 +185,30 @@ push bp
      inc bx             ;
      inc si             ;
      jmp SPUSH
-  FPUSH:   
+  FPUSH: 
+  push ax
+  
   mov al,0dh
-  mov  [ds:bx],al     
-  sub bx,bp             ; 
-  sub bx,2           
-  mov [ds:bp+1],bl      ;      
+  mov  [ds:bx],al  
+
+  pop ax
+  
+  
+  sub bx,ax
+
+  sub bx,2 
+  
+  push dx
+  push bx
+  
+  mov dx, bx
+  mov bx, ax
+  
+  mov [ds:bx+1],dl
+  
+  pop bx
+  pop dx
+     
   sub cx,bx             ;  
   cmp bl,00h            ; Установим флаг нуля 
 pop  bp
@@ -210,22 +230,31 @@ Int_To_Str proc near
   
 
   xor cx,cx      ; Счетчик записанных в стек симолов   
-  mov bp,dx      ; Адрес строки занесем в Bp
+  ;mov bp,dx      
+  mov bx,dx		 ; Адрес строки занесем в Bp
+  
   xor dx,dx                    
-  mov bl,10      ; Показатель СС = 10
+  ;mov bl,10      ; Показатель СС = 10
 
   cmp al,0h       
   jg PUSHASCII     
   jz PUSHASCII       
   
   neg al 
-  mov [bp],2dh            
-  inc bp
+  
+  mov [bx],2dh
+  inc bx
+
   
 PUSHASCII:
   cbw             ;
   xor ah,ah
+  
+  push bx
+  mov bl,10
   div bl          ; После деления в  Al целая часть, В Ah - остаток
+  pop bx
+  
   add ah,30h      ; Получили ASCII символ цифры остатка в  ah
   mov dl,ah        
   push dx         ; Затолкнем ASCII символ в стек
@@ -236,11 +265,16 @@ PUSHASCII:
 ; Вытолкнем все ASCII из стека в строку
 POPASCII:
   pop dx          ; выпихнем ASCII код из стека (В обратном порядке)
-  mov [bp],dl     ; Занесем символ в строку  
-  inc bp          ;  
+  
+  mov [bx],dl
+  inc bx
+  ;mov [bp],dl     ; Занесем символ в строку  
+  ;inc bp          ;  
+  
   loop POPASCII   ; 
   
-  mov [bp],24h    ; Завершающий символ в строке $  
+  mov [bx],24h
+  ;mov [bp],24h    ; Завершающий символ в строке $  
   
   pop bp
   pop dx               
